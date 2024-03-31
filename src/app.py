@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, People, Planet
 #from models import Person
 
 app = Flask(__name__)
@@ -36,14 +36,48 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/user', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def handle_hello():
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+     users = User.query.all() # SELECT * from users;
 
-    return jsonify(response_body), 200
+     return jsonify([ person.serialize() for person in users ]), 200
+
+
+@app.route('/people', methods=['GET'])
+def get_people():
+
+    peoples = People.query.all()
+    return jsonify([people.serialize() for people in peoples]), 200
+
+
+@app.route('/people/<int:people_id>', methods=['GET'])
+def get_person(people_id):
+
+    person = People.query.get(people_id)
+    if person:
+        return jsonify(person.serialize())
+    else:
+        return jsonify({"error": "Person not found"}), 404    
+
+@app.route('/planet', methods=['GET'])
+def get_planet():
+
+    planets = Planet.query.all()
+    return jsonify([planet.serialize() for planet in planets]), 200
+
+@app.route('/planet/<int:planet_id>', methods=['GET'])
+def get_planet(planet_id):
+    
+    planet = Planet.query.get(planet_id)
+    if planet:
+        return jsonify(planet.serialize())
+    else:
+        return jsonify({"error": "Planet not found"}), 404
+
+
+
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

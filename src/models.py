@@ -17,3 +17,46 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+class People(db.Model):
+     __tablename__ = "people"
+     id = db.Column(db.Integer, primary_key=True)
+     name = db.Column(db.String(120), unique=True, nullable=False)
+     eyes_color = db.Column(db.String(120), unique=True, nullable=False)
+
+
+     def __init__(self, name, eyes_color):
+        self.name = name
+        self.eyes_color = eyes_color
+
+
+     def __repr__(self):
+        return f'<People {self.name}>'
+
+
+     def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "eyes_color": self.eyes_color
+        }   
+
+class Planet(db.Model):
+     __tablename__ = "planet"
+     id = db.Column(db.Integer, primary_key=True)
+     name = db.Column(db.String(120), unique=True, nullable=False)
+     population = db.Column(db.String(2000), unique=True, nullable=False)
+
+     def __init__(self, name, population):
+        self.name = name
+        self.population = population
+
+
+     def __repr__(self):
+        return f'<Planet {self.name}>'
+
+     def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "population": self.population
+        }       

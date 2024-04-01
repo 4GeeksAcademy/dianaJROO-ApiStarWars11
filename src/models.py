@@ -59,4 +59,17 @@ class Planet(db.Model):
             "id": self.id,
             "name": self.name,
             "population": self.population
-        }       
+        }  
+
+class Favorite_User(db.Model):
+     __tablename__ = "favorite_user"
+     id = db.Column(db.Integer, primary_key=True)
+
+     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+     user = db.relationship(User)          
+
+     def serialize(self):
+        return {
+            "id": self.id,
+          
+        } 

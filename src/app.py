@@ -60,13 +60,13 @@ def get_person(people_id):
     else:
         return jsonify({"error": "Person not found"}), 404    
 
-@app.route('/planet', methods=['GET'])
+@app.route('/planets', methods=['GET'])
 def get_planet():
 
     planets = Planet.query.all()
     return jsonify([planet.serialize() for planet in planets]), 200
 
-@app.route('/planet/<int:planet_id>', methods=['GET'])
+@app.route('/planets/<int:planet_id>', methods=['GET'])
 def get_planeta(planet_id):
     
     planeta = Planet.query.get(planet_id)

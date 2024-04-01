@@ -8,8 +8,9 @@ class User(db.Model):
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
-    def __repr__(self):
-        return '<User %r>' % self.username
+  
+  #  def __repr__(self, ):
+   #     return '<User %r>' % self.username
 
     def serialize(self):
         return {
@@ -17,6 +18,7 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+    
 class People(db.Model):
      __tablename__ = "people"
      id = db.Column(db.Integer, primary_key=True)
@@ -61,15 +63,51 @@ class Planet(db.Model):
             "population": self.population
         }  
 
-class Favorite_User(db.Model):
-     __tablename__ = "favorite_user"
+class FavoritePeople(db.Model):
+     __tablename__ = "favorite_people"
      id = db.Column(db.Integer, primary_key=True)
 
      user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-     user = db.relationship(User)          
+     user = db.relationship(User) 
+
+     people_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+     people = db.relationship(People) 
+  
+        
+       
+     def __repr__(self):
+        return f'<Favorite_user {self.name}>'
+
 
      def serialize(self):
         return {
             "id": self.id,
+            "user_id": self.user_id,
+            "people_id": self.people_id,
           
         } 
+     
+class FavoritePlanet(db.Model):
+     __tablename__ = "favorite_planet"
+     id = db.Column(db.Integer, primary_key=True)
+
+     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+     user = db.relationship(User) 
+
+     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
+     planet = db.relationship(Planet) 
+  
+        
+       
+     def __repr__(self):
+        return f'<Favorite_user {self.name}>'
+
+
+     def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "planet_id": self.planet_id,
+          
+        }      
+    
